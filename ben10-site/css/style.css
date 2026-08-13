@@ -1,0 +1,677 @@
+/* ==========================================================================
+   BEN 10 - SITE OFICIAL DO FÃ
+   CSS Global: reset, design tokens, tipografia base, Header e Footer
+   ========================================================================== */
+
+/* Fontes: 'Orbitron' para títulos (visual tecnológico/HUD do Omnitrix)
+   e 'Rajdhani' para corpo de texto (sans condensada, legível, tom "sci-fi") */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap");
+
+/* ---------- DESIGN TOKENS ---------- */
+:root {
+  /* Paleta - identidade Ben 10 */
+  --color-bg: #0d0f0d;              /* preto levemente esverdeado (fundo geral) */
+  --color-bg-alt: #17191a;          /* cinza escuro (cards, seções alternadas) */
+  --color-border: #2a2d2b;          /* bordas sutis sobre o fundo escuro */
+  --color-neon: #39ff14;            /* verde neon - cor de destaque/ação */
+  --color-neon-dim: #1f8f0c;        /* verde neon em estado "apagado"/hover escuro */
+  --color-white: #f4f6f4;           /* branco levemente frio, para textos principais */
+  --color-muted: #9aa39a;           /* cinza esverdeado, para textos secundários */
+
+  /* Tipografia */
+  --font-display: "Orbitron", "Segoe UI", sans-serif;
+  --font-body: "Rajdhani", "Segoe UI", sans-serif;
+
+  /* Layout */
+  --container-max: 1200px;
+  --header-height: 76px;
+  --radius: 4px;
+  --border-w: 1px;
+
+  /* Sombra neon usada em elementos de destaque (botões, cards em hover) */
+  --glow-neon: 0 0 8px rgba(57, 255, 20, 0.55), 0 0 24px rgba(57, 255, 20, 0.15);
+}
+
+/* ---------- RESET ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  /* Textura sutil: leve grid tecnológico de fundo, no espírito do HUD do Omnitrix */
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 42px 42px;
+  background-attachment: fixed;
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button,
+input {
+  font-family: inherit;
+  color: inherit;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+}
+
+/* Respeita usuários que preferem menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Foco visível para navegação via teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--color-neon);
+  outline-offset: 3px;
+}
+
+/* ---------- UTILITÁRIOS ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+main {
+  flex: 1;
+}
+
+/* Botão "chanfrado" (cantos cortados) - o elemento-assinatura do site,
+   remete ao formato hexagonal/facetado do símbolo do Omnitrix */
+.btn {
+  --clip: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border: var(--border-w) solid var(--color-neon);
+  clip-path: polygon(
+    var(--clip) 0, 100% 0, 100% calc(100% - var(--clip)),
+    calc(100% - var(--clip)) 100%, 0 100%, 0 var(--clip)
+  );
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background-color: var(--color-neon);
+  color: var(--color-bg);
+}
+
+.btn-primary:hover {
+  box-shadow: var(--glow-neon);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-neon);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(57, 255, 20, 0.08);
+  box-shadow: var(--glow-neon);
+}
+
+/* ---------- HEADER ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  background-color: rgba(13, 15, 13, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: var(--border-w) solid var(--color-border);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--color-white);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.logo span {
+  color: var(--color-neon);
+}
+
+/* Quando a logo for uma imagem (substitui o texto 'BEN10') */
+.logo img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .logo img {
+    height: 34px;
+  }
+
+  .site-header .container {
+    padding-inline: 12px;
+  }
+}
+
+.nav-menu {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-menu a {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding: 10px 16px;
+  transition: color 0.15s ease;
+}
+
+.nav-menu a:hover {
+  color: var(--color-white);
+}
+
+/* Link da página atual: destacado em verde neon com sublinhado */
+.nav-menu a.active {
+  color: var(--color-neon);
+}
+
+.nav-menu a.active::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 4px;
+  height: 2px;
+  background-color: var(--color-neon);
+  box-shadow: var(--glow-neon);
+}
+
+/* Menu mobile: empilha e reduz espaçamentos em telas pequenas */
+@media (max-width: 640px) {
+  .site-header .container {
+    flex-direction: column;
+    gap: 4px;
+    padding-block: 12px;
+  }
+
+  .site-header {
+    height: auto;
+  }
+
+  .nav-menu {
+    gap: 0;
+  }
+
+  .nav-menu a {
+    padding: 6px 10px;
+    font-size: 0.72rem;
+  }
+}
+
+/* ---------- FOOTER ---------- */
+.site-footer {
+  border-top: var(--border-w) solid var(--color-border);
+  padding-block: 24px;
+  margin-top: 64px;
+}
+
+.site-footer p {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   PÁGINA 1 - SORTEAR ALIEN (index.html)
+   ========================================================================== */
+
+.sortear-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-block: 64px 80px;
+}
+
+.page-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 900;
+  color: var(--color-white);
+}
+
+.page-subtitle {
+  margin-top: 12px;
+  color: var(--color-muted);
+  font-size: 1.05rem;
+}
+
+/* Card principal - cantos chanfrados (assinatura visual do site) e borda
+   que "acende" em verde neon quando um alien é sorteado */
+.alien-card {
+  --clip: 22px;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 48px;
+  padding: 32px 24px;
+  background-color: var(--color-bg-alt);
+  border: var(--border-w) solid var(--color-border);
+  clip-path: polygon(
+    var(--clip) 0, 100% 0, 100% calc(100% - var(--clip)),
+    calc(100% - var(--clip)) 100%, 0 100%, 0 var(--clip)
+  );
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Quando um alien já foi sorteado, o card recebe destaque neon */
+.alien-card[data-state="filled"] {
+  border-color: var(--color-neon);
+  box-shadow: var(--glow-neon);
+}
+
+.alien-card__image-wrap {
+  width: 180px;
+  height: 180px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+  border: 1px dashed var(--color-border);
+}
+
+/* "X" que representa a imagem ausente antes do primeiro sorteio */
+.alien-card__placeholder {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--color-border);
+  line-height: 1;
+}
+
+.alien-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.alien-card__nome {
+  margin-top: 24px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: 0.04em;
+}
+
+.alien-card__tipo {
+  margin-top: 6px;
+  color: var(--color-neon);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.sortear-actions {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.sortear-actions .btn {
+  width: 260px;
+}
+
+/* ==========================================================================
+   PÁGINA 2 - LISTA DE ALIENS (aliens.html)
+   ========================================================================== */
+
+.aliens-section {
+  padding-block: 56px 80px;
+}
+
+.aliens-section .page-title {
+  text-align: center;
+}
+
+/* Barra de busca */
+.search-bar {
+  max-width: 420px;
+  margin: 32px auto 0;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 14px 18px;
+  background-color: var(--color-bg-alt);
+  border: var(--border-w) solid var(--color-border);
+  color: var(--color-white);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.search-bar input::placeholder {
+  color: var(--color-muted);
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--color-neon);
+  box-shadow: var(--glow-neon);
+}
+
+/* Grid de cards - 3 colunas no desktop, conforme especificação */
+.aliens-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .aliens-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .aliens-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card menor de alien, dentro do grid */
+.alien-mini-card {
+  --clip: 14px;
+  background-color: var(--color-bg-alt);
+  border: var(--border-w) solid var(--color-border);
+  clip-path: polygon(
+    var(--clip) 0, 100% 0, 100% calc(100% - var(--clip)),
+    calc(100% - var(--clip)) 100%, 0 100%, 0 var(--clip)
+  );
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: 18px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.alien-mini-card:hover,
+.alien-mini-card:focus-visible {
+  border-color: var(--color-neon);
+  box-shadow: var(--glow-neon);
+  transform: translateY(-4px);
+}
+
+.alien-mini-card__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background-color: var(--color-bg);
+  border-bottom: var(--border-w) solid var(--color-border);
+}
+
+.alien-mini-card__nome {
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-white);
+}
+
+.no-results,
+.loading-msg {
+  margin-top: 48px;
+  text-align: center;
+  color: var(--color-muted);
+  grid-column: 1 / -1;
+}
+
+/* ==========================================================================
+   PÁGINA 3 - DETALHES DO ALIEN (alien.html)
+   ========================================================================== */
+
+.alien-detalhe {
+  padding-block: 48px 80px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  transition: color 0.15s ease;
+}
+
+.back-link:hover {
+  color: var(--color-neon);
+}
+
+/* --- Hero: imagem grande + info principal --- */
+.detalhe-hero {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.detalhe-hero__image-wrap {
+  --clip: 22px;
+  background-color: var(--color-bg-alt);
+  border: var(--border-w) solid var(--color-neon);
+  box-shadow: var(--glow-neon);
+  clip-path: polygon(
+    var(--clip) 0, 100% 0, 100% calc(100% - var(--clip)),
+    calc(100% - var(--clip)) 100%, 0 100%, 0 var(--clip)
+  );
+  overflow: hidden;
+}
+
+.detalhe-hero__image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+.detalhe-hero__info h1 {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 900;
+  color: var(--color-white);
+}
+
+.detalhe-hero__tipo {
+  margin-top: 10px;
+  color: var(--color-neon);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 1.05rem;
+}
+
+.detalhe-hero__descricao {
+  margin-top: 20px;
+  max-width: 60ch;
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* --- Seções Habilidades / Sobre --- */
+.detalhe-secao {
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: var(--border-w) solid var(--color-border);
+}
+
+.detalhe-secao__titulo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: 0.05em;
+}
+
+.detalhe-secao__titulo::before {
+  content: "// ";
+  color: var(--color-neon);
+}
+
+/* Lista de habilidades com marcador customizado (triângulo) */
+.habilidades-lista {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 32px;
+}
+
+.habilidades-lista li {
+  position: relative;
+  padding-left: 22px;
+  color: var(--color-white);
+  font-size: 1rem;
+}
+
+.habilidades-lista li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--color-neon);
+}
+
+/* Lista de atributos (Espécie, Planeta, Altura, Peso) */
+.atributos-lista {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 32px;
+}
+
+.atributo {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: var(--border-w) dashed var(--color-border);
+}
+
+.atributo dt {
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.atributo dd {
+  color: var(--color-white);
+  font-weight: 700;
+  text-align: right;
+}
+
+/* --- Estado: alien não encontrado --- */
+.alien-nao-encontrado {
+  padding-block: 80px;
+  text-align: center;
+}
+
+.alien-nao-encontrado h1 {
+  font-size: 1.8rem;
+  color: var(--color-white);
+}
+
+.alien-nao-encontrado p {
+  margin-top: 12px;
+  color: var(--color-muted);
+}
+
+.alien-nao-encontrado .btn {
+  margin-top: 32px;
+}
+
+/* Responsivo: hero empilha em telas menores */
+@media (max-width: 760px) {
+  .detalhe-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .detalhe-hero__image-wrap {
+    max-width: 320px;
+    margin-inline: auto;
+  }
+
+  .habilidades-lista,
+  .atributos-lista {
+    grid-template-columns: 1fr;
+  }
+
+  .atributo dd {
+    text-align: left;
+  }
+}

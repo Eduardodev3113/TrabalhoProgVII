@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="96" viewBox="0 0 320 96">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0%" stop-color="#7fff3a"/>
+      <stop offset="100%" stop-color="#00a000"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="none" />
+  <text x="50%" y="54%" font-family="Orbitron, Arial, sans-serif" font-weight="900" font-size="56" fill="url(#g)" text-anchor="middle">BEN<tspan fill="#ffffff">10</tspan></text>
+</svg>
